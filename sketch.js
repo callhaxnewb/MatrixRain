@@ -1,34 +1,52 @@
+const symbolSize=26;
 // var mySymbol;
-const symbolSize=50;
-var stream;
+// var stream;
+var streams=[];
 
 function setup() {
-  createCanvas(windowWidth,windowHeight);
-  background(0);
+    createCanvas(windowWidth,windowHeight);
+    background(0);
   
 //   mySymbol=new RedPill(
 //     width/2,
 //     0,
 //     random(1,5));
 //   mySymbol.setValueRandom();
-  stream=new Stream();
-  stream.generateSymbols();
-  textSize(symbolSize);
+
+    var x = 0;
+    var y = random(-1500,0);
+    for (var i = 0; i <= width/symbolSize; i++){
+        var stream = new Stream();
+        stream.generateSymbols(x,y);
+        streams.push(stream);
+        x+=symbolSize;
+    }
+
+    // stream=new Stream();
+    // stream.generateSymbols();
+    textSize(symbolSize);
 }
 
 function draw() {
-  background(0);
+    //opacity default set to 255 ( fully opaque) and 0 is transparent entirely
+    background(0,100);
 //   mySymbol.renderMatrix();
-  stream.renderingMatrix();
+//   stream.renderingMatrix();
+
+    streams.forEach((stream)=>{
+        stream.renderingMatrix();
+    })
+
 }
 
 class RedPill{
-  constructor(x,y,speed){
+  constructor(x, y, speed){
     this.x=x;
     this.y=y;
     this.value='yo';
     this.speed=speed;
     this.switchInterval=round(random(2,20));
+    
   }
   
   
@@ -74,16 +92,17 @@ class Stream{
         this.speed=random(5,20);
     }
 
-    generateSymbols(){
-        var y=0;
-        var x=width/2;
+    generateSymbols(x,y){
+        var first=true;
+        for(var i = 0; i <= this.totalSymbols; i++){
 
-        for(var i=0;i<=this.totalSymbols;i++){
-            var symbol=new RedPill(x,y,this.speed);
+            var symbol = new RedPill(x,y,this.speed,first);
             symbol.setValueRandom();
             this.symbols.push(symbol);
+
             //we want to decrement y by the symbol size to sort of set the next symbol directly above it instead of the the same place, theyre stacked
             y-=symbolSize;
+            first=false;
 
         }
 
