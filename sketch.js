@@ -7,6 +7,7 @@ var streams=[];
 function setup() {
     createCanvas(windowWidth,windowHeight);
     background(0);
+    frameRate(30);
   
 //   mySymbol=new RedPill(
 //     width/2,
